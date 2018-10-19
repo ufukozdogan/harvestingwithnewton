@@ -4,14 +4,14 @@
 
 ## Explanation
 
-Simple React.js Native Game with some apples and a cute tree! Upon clicking the button tree starts to shake. After the effect, apples start falling one by one! Seeing them in the basket is also heartwarming. Of course it has its flaws but it's working after all!
+Simple React.js Game with some apples and a cute tree! Upon clicking the button tree starts to shake. After the effect, apples start falling one by one! Seeing them in the basket is also heartwarming. Of course it has its flaws but it's working after all!
 
 ## Play It Right Now!
 
 Click [here](https://ufukozdogan.github.io/harvestingwithnewton/) to play Harvesting with Newton!
 
 ## Technologies Used
-* React Native
+* React.js
 * Sass
 
 ## Future Plans
