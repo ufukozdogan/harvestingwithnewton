@@ -1,0 +1,219 @@
+.App {
+  text-align: center;
+}
+
+.App-header {
+  background: url(./Images/background.png);
+  background-repeat: no-repeat;
+  background-position: bottom;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+// Warning at the bottom of the screen.
+.App-warning {
+  position: fixed;
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;
+  bottom: 2%;
+}
+
+// HUD
+.App-hud {
+  position: fixed;
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  top: 2%;
+  left: 2%;
+}
+
+// Info at top right.
+.App-info {
+  position: fixed;
+  color: #000;
+  font-size: 16px;
+  font-weight: bold;
+  top: 2%;
+  right: 2%;
+  text-align: right;
+}
+
+// Basket on the screen. 
+.basket-image {
+  height: 15vmin;
+  position: fixed;
+  top: 50%;
+  transform: translateX(-275%) translateY(150%);  
+}
+
+// Tree's classname when it's stable.
+.stagnant {
+  position: fixed;  
+  height: 60vmin;
+  bottom: 14%;
+}
+
+// Tree's classname while it's shaking.
+.shaking {
+  position: fixed;
+  height: 60vmin;
+  bottom: 14%;
+  animation: shake 3s cubic-bezier(.36,.07,.19,.97) both; // Shaking animation
+}
+
+// Newton sign!
+.sign {
+  position: fixed;
+  transform: translateX(-275%) translateY(75%);
+  width: 200px;
+  height: 200px;
+  transition: all 0.5s;
+}
+
+// Mighty button.
+.grab {
+  border: 1px solid transparent;
+  box-shadow: 3px 3px 2px rgba(black, 0.15);
+  position: fixed;
+  height: 6vmin;
+  width: 24vmin;
+  right: 12%;
+  top: 50%;
+  cursor: pointer;
+  background: #e5f4f8;
+  color: #55706D;
+  border-radius: 40px;
+  padding: 15px 30px;
+  overflow: hidden;  
+  transition: 
+    all        .2s,
+    border     0.2s .1s,
+    box-shadow 0s .1.2s;
+  &:hover {
+    text-indent: 0;
+    background: #e5f4f8;
+    border: 1px solid royalblue;
+    box-shadow: 3px 3px 2px rgba(black, 0.50);
+  }
+  &:active {
+    text-indent: 0;
+    background: #cddbdf;
+    border: 1px solid royalblue;
+    box-shadow: 3px 3px 2px rgba(black, 0.60);
+  }
+}
+
+$apples: 1 2 3 4 5 6 7 8 9 10 11 12; // Apples we have.
+
+// 'spec-apples mixin' defines apple's visual assets such as size or position. And it'll be called for every apple on the screen.
+@mixin spec-apples(){
+  z-index: 1;
+  position: fixed;
+  height: 4vmin;
+  transform: translateX(-400%);
+}
+
+// 'place-apples mixin' places apples on the tree randomly. 
+// IMPORTANT NOTE: Random numbers are NOT generated every time app refreshes or renders. It's generated when Sass Compiler compiles the code. This effect cannot be changed because Sass simply works this way.
+@mixin place-apples(){
+  $random-height: random(23) + 32;
+  $random-weight: random(20) + 47;
+  top: percentage($random-height / 100);
+  left: percentage($random-weight / 100);
+}
+
+// 'case-apples mixin' defines the valid basket area that apples can be placed after they fell down.
+@mixin case-apples(){
+  $random-height: random(2) + 78;
+  $random-weight: random(2) + 32;
+  top: percentage($random-height / 100);
+  left: percentage($random-weight / 100);
+}
+
+// This loop goes through each apple one by one. Specs the apple and places it on the tree via using mixins provided. 
+@each $i in $apples {
+  .apple-image#{$i}present {
+    // For '.apple-image1present', '.apple-image2present'...
+    @include spec-apples();
+    @include place-apples();
+  }
+
+  // When apple's status state change to 'falling, this comes to rescue. 
+  // For '.apple-image1falling', '.apple-image2falling'...
+  .apple-image#{$i}falling { 
+    z-index: 1;
+    position: fixed; 
+    height: 4vmin;
+    @include place-apples();
+    // duration | timing-function | fill-mode | name
+    animation: 4s ease-out both apple-action; // Apple animation.
+    animation-delay: 3s;    
+  }
+}
+
+// Fall, disappear, and appear again! Three things in one, it's like Nescafe 3in1 of functions! 
+@keyframes apple-action {
+  0% {
+    bottom: 50%;
+    left: unset;
+    opacity: 1;    
+  }
+
+  35% {
+    top: 82%;
+    left: unset;
+    opacity: 1;      
+  }
+  
+  50% {
+    top: 83%; 
+    left: unset;
+    opacity: 0;      
+  }
+
+  51% {
+    opacity: 0; 
+    left: 33%;       
+  }
+
+  80% {
+    top: 79%; 
+    opacity: 0; 
+  }
+
+  100% { 
+    @each $i in $apples {
+      @include case-apples();
+    }    
+    opacity: 1;    
+  }
+}
+
+@keyframes shake {
+  10%, 90% {
+    transform: translate3d(-1px, 0, 0);
+  }
+  
+  20%, 80% {
+    transform: translate3d(2px, 0, 0);
+  }
+
+  30%, 50%, 70% {
+    transform: translate3d(-4px, 0, 0);
+  }
+
+  40%, 60% {
+    transform: translate3d(4px, 0, 0);
+  }
+}
