@@ -11,7 +11,7 @@ Simple React.js Game with some apples and a cute tree! Upon clicking the button 
 Click [here](https://ufukozdogan.github.io/harvestingwithnewton/) to play Harvesting with Newton!
 
 ## Technologies Used
-* React.js
+* Application created with CRA v2.0
 * Sass
 
 ## Future Plans
